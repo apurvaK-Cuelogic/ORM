@@ -3,42 +3,43 @@ require_relative '../lib/adapter/mysqlOperation'
 
 class DbManager
   @@subclass=nil
-
-  read_properties=["all"]
   def self.inherited(subclass)
-    @@subclass=subclass
-  end
-
-  def db_type
-    if @@con.class.eql? Mysql
-     @@db_type = 'Mysql'
+    @@subclass=subclass.to_s
   end
 
   def initialize
     api= Api_model.new('mysql')
     @@con=api.connect
-    #if con= (connection is mySql or not)
-    if @@db_type.eql? Mysql
-      #check whether table exist
-      if MysqlOperation.instance.checkTable('Student',@@con).eql? true
-        @@valid=true
-      else
-        # if not then siplay message and abort
-        @@valid=false
+    if @@con.class.eql? Mysql   #if con= (connection is mySql or not)
+      if MysqlOperation.instance.checkTable(@@subclass,@@con).eql? false      #check whether table exist
+        # if not then siplay message an abort
         abort("Table does not exist")
       end
     end
   end
 
   def self.all
-    if @@db_type.class.eql? Mysql
-    MysqlOperation.instance.all(@@con)
+    if @@con.class.eql? Mysql
+    MysqlOperation.instance.all
     end
   end
 
+  def self.delete(id)
+    if @@con.class.eql? Mysql
+      MysqlOperation.instance.delete(id)
+    end
+  end
+
+  def self.insert(*values)
+    if @@con.class.eql? Mysql
+      MysqlOperation.instance.insert(*values)
+    end
+  end
+
+  def self.find(*values)
+    if @@con.class.eql? Mysql
+      MysqlOperation.instance.find(values)
+    end
+  end
 
 end
-
-
-DbManager.new
-DbManager.all

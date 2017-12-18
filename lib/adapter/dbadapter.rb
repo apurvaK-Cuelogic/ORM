@@ -18,7 +18,6 @@ class Api_model
 
   def adapter
    if @db.eql? 'mysql'
-     puts "1"
     self.adapter = :Mysqlapi
     @adapter
    end
