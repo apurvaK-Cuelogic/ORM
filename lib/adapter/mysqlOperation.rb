@@ -6,7 +6,7 @@ class MysqlOperation
     return @@instance
   end
 
-  def all(arg)
+  def all(_)
     rs = @con.query("select * from #{@tablename}")
     rs.each_hash { |h|
       h.each {|k,v|

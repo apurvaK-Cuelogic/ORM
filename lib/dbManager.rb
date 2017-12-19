@@ -22,3 +22,16 @@ class DbManager < Operation
   end
 end
 
+
+#For Example
+=begin
+class Student < DbManager
+Student.new
+Student.all
+Student.find(rank: 3)
+Student.find(id: 1,rank: 3)
+Student.find(id: 1,name: 'prats',rank: 3)
+Student.insert(7,'apurva',4)
+Student.delete(7)
+end
+=end
