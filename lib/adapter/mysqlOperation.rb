@@ -6,7 +6,7 @@ class MysqlOperation
     return @@instance
   end
 
-  def all
+  def all(arg)
     rs = @con.query("select * from #{@tablename}")
     rs.each_hash { |h|
       h.each {|k,v|
@@ -27,7 +27,7 @@ class MysqlOperation
   end
 
   def delete(id)
-    rs = @con.query("select * from #{@tablename} where id = #{id}")
+    rs = @con.query("select * from #{@tablename} where id = #{id.join}")
     if rs.num_rows == 0
       puts "No record Exist"
     else
@@ -37,7 +37,7 @@ class MysqlOperation
   end
 
 
-  def insert(*values)
+  def insert(values)
     begin
     rs = @con.query("insert into #{@tablename} values(#{values.map { |i| "'" + i.to_s + "'" }.join(",")})")
     rescue Mysql::Error => e
@@ -72,20 +72,6 @@ class MysqlOperation
       puts
     }
   end
-
-  def update(*details)
-    string ="update table #{@tablename} set where"
-    string=stringOperation(*details,string)
-    rs = @con.query("#{string}")
-    rs.each_hash { |h|
-      h.each {|k,v|
-        print "#{k} = #{v}, "
-      }
-      puts
-    }
-  end
-
-
 
   private_class_method :new
 end

@@ -14,7 +14,6 @@ class DbManager < Operation
     @@con=api.connect
     Operation.new (@@con)
     if @@con.class.eql? Mysql   #if con= (connection is mySql or not)
-
       if MysqlOperation.instance.checktable(@@subclass,@@con).eql? false      #check whether table exist
         # if not then siplay message an abort
         abort("Table does not exist")
@@ -23,7 +22,3 @@ class DbManager < Operation
   end
 end
 
-class Student < DbManager
-Student.new
-Student.all
-end
