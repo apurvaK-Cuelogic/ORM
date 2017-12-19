@@ -7,13 +7,12 @@ class MysqlOperation
   end
 
   def all(_)
+    result=[]
     rs = @con.query("select * from #{@tablename}")
     rs.each_hash { |h|
-      h.each {|k,v|
-        print "#{k} = #{v}, "
+      result << h
       }
-      puts
-    }
+      result
   end
 
   def checktable(tablename,con)
@@ -32,7 +31,7 @@ class MysqlOperation
       puts "No record Exist"
     else
       puts "Record Exist"
-      @con.query("delete from #{@tablename} where id= #{id}")
+      @con.query("delete from #{@tablename} where id= #{id.join}")
     end
   end
 
@@ -62,15 +61,14 @@ class MysqlOperation
 
 
   def find(*details)
+    result=[]
     string ="select * from #{@tablename} where"
     string=stringOperation(*details,string)
     rs = @con.query("#{string}")
     rs.each_hash { |h|
-      h.each {|k,v|
-      print "#{k} = #{v}, "
-      }
-      puts
+     result << h
     }
+    result
   end
 
   private_class_method :new

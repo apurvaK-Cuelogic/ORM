@@ -27,11 +27,11 @@ end
 =begin
 class Student < DbManager
 Student.new
-Student.all
-Student.find(rank: 3)
-Student.find(id: 1,rank: 3)
-Student.find(id: 1,name: 'prats',rank: 3)
-Student.insert(7,'apurva',4)
-Student.delete(7)
+Student.all #returns array object
+Student.find(rank: 3)  #returns array object
+Student.find(id: 1,rank: 3)  #returns array object
+Student.find(id: 1,name: 'pratik',rank: 3)  #returns array object
+#Student.insert(4,'apurva',4)
+Student.delete(2)
 end
 =end
