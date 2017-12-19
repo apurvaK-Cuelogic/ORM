@@ -16,7 +16,7 @@ class MysqlOperation
     }
   end
 
-  def checkTable(tablename,con)
+  def checktable(tablename,con)
     @con=con
     @tablename=tablename
     rs = con.query("show tables")
