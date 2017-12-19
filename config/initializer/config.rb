@@ -1,0 +1,5 @@
+DB_TYPE='mysql'
+HOSTNAME='localhost'
+USERNAME='root'
+PASSWORD= 'root'
+DB_NAME='ruby'
