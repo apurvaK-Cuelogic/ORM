@@ -6,15 +6,6 @@ class MysqlOperation
     return @@instance
   end
 
-  def all(_)
-    result=[]
-    rs = queryoperation("select * from #{@tablename}")
-    rs.each_hash { |h|
-      result << h
-    }
-   result
-  end
-
   def checktable(tablename,con)
     @tablename=tablename
     rs = con.query("show tables")
@@ -23,16 +14,6 @@ class MysqlOperation
       false
     }.eql? true
     false
-  end
-
-  def delete(id)
-    rs = @con.query("select * from #{@tablename} where id = #{id.join}")
-    if rs.num_rows == 0
-      puts "No record Exist"
-    else
-      puts "Record Exist"
-      @con.query("delete from #{@tablename} where id= #{id.join}")
-    end
   end
 
   def queryoperation(string)
@@ -54,6 +35,15 @@ class MysqlOperation
       end
     end
     string
+  end
+
+ def all(_)
+    result=[]
+    rs = queryoperation("select * from #{@tablename}")
+    rs.each_hash { |h|
+      result << h
+    }
+   result
   end
 
   def delete(id)
