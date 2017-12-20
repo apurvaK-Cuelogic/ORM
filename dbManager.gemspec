@@ -5,5 +5,5 @@ Gem::Specification.new do |s|
   s.summary     = "dbOrm"
   s.description = "Database Basic Operations"
   s.authors     = ["Apurva Pratik"]
-  s.files       = ["lib/dbManager.rb"]
+  s.files       = %w(dbManager.gemspec) + Dir.glob("lib/**/*")
 end

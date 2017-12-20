@@ -8,21 +8,21 @@ class MysqlOperation
 
   def all(_)
     result=[]
-    rs = @con.query("select * from #{@tablename}")
+    rs = queryoperation("select * from #{@tablename}")
     rs.each_hash { |h|
       result << h
-      }
-      result
+    }
+   result
   end
 
   def checktable(tablename,con)
-    @con=con
     @tablename=tablename
     rs = con.query("show tables")
-    rs.each_hash { |h|
-    return true if h["Tables_in_ruby"].eql? tablename
+    return true if rs.each_hash { |h|
+      return true if h["Tables_in_ruby"].eql? tablename
       false
-    }
+    }.eql? true
+    false
   end
 
   def delete(id)
@@ -35,17 +35,14 @@ class MysqlOperation
     end
   end
 
-
-  def insert(values)
-    begin
-    rs = @con.query("insert into #{@tablename} values(#{values.map { |i| "'" + i.to_s + "'" }.join(",")})")
-    rescue Mysql::Error => e
-      puts e.error
-    end
+  def queryoperation(string)
+    con=Api_model.new(DB_TYPE).connect
+    rs = con.query(string)
+    con.close
+    rs
   end
 
-
-  def stringOperation(*details,string)
+  def stringoperation(*details,string)
     i=0
     details[0].each do |key|
       key.each do |k,v|
@@ -59,14 +56,32 @@ class MysqlOperation
     string
   end
 
+  def delete(id)
+    rs = queryoperation("select * from #{@tablename} where id = #{id.join}")
+    if rs.num_rows == 0
+      puts "Delete: No such record Exist"
+    else
+      queryoperation("delete from #{@tablename} where id= #{id.join}")
+      puts "Deleted Successfully"
+    end
+  end
+
+
+  def insert(values)
+    begin
+    rs = queryoperation("insert into #{@tablename} values(#{values.map { |i| "'" + i.to_s + "'" }.join(",")})")
+    rescue Mysql::Error => e
+      puts e.error
+    end
+  end
 
   def find(*details)
     result=[]
     string ="select * from #{@tablename} where"
-    string=stringOperation(*details,string)
-    rs = @con.query("#{string}")
+    string=stringoperation(*details,string)
+    rs =queryoperation("#{string}")
     rs.each_hash { |h|
-     result << h
+      result << h
     }
     result
   end
