@@ -6,23 +6,24 @@ class Api_model
     include Mysqlapi
   end
 
-  def initialize(database)
-    @db=database
-  end
 
+  def initialize(database)
+    begin
+      raise if database != "mysql"
+        @db=:Mysqlapi
+    rescue
+      abort("#{database} not supported")
+    end
+  end
 
   def connect
     return self.adapter.connect
   end
 
-
   def adapter
-   if @db.eql? 'mysql'
-    self.adapter = :Mysqlapi
+    self.adapter = @db
     @adapter
-   end
   end
-
 
   def adapter=(adapter)
     @adapter = Api_model::Adapter.const_get(adapter.to_s.capitalize)
